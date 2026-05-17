@@ -16,9 +16,7 @@ import '../widgets/hand_overlay_painter.dart';
 import '../widgets/bottom_hud_pannel.dart';
 import '../widgets/top_hud_bar.dart';
 
-// ─────────────────────────────────────────────
-// Paramètres passés à l'Isolate (tout sérialisable)
-// ─────────────────────────────────────────────
+
 class _AlignParams {
   final int width, height, yRowStride, uvRowStride;
   final Uint8List yBytes, uBytes, vBytes;
@@ -38,13 +36,10 @@ class _AlignParams {
   });
 }
 
-// ─────────────────────────────────────────────
-// FIX 1 + FIX 2 : lecture directe + rotate/flip dans l'Isolate
-// Cette fonction tourne hors du thread UI via compute()
-// ─────────────────────────────────────────────
+
+// Cette fonction tourne hors du thread UI dans un isolate
 img.Image? _alignFrameIsolate(_AlignParams p) {
   try {
-// Conversion YUV→RGB (lecture directe, pas de Uint8List.fromList)
     final rgba = Uint8List(p.width * p.height * 4);
     int idx = 0;
     for (int row = 0; row < p.height; row++) {
@@ -61,7 +56,7 @@ img.Image? _alignFrameIsolate(_AlignParams p) {
         rgba[idx++] = 255;
       }
     }
-
+    //création de l'image 
     img.Image aligned = img.Image.fromBytes(
       width: p.width,
       height: p.height,
@@ -69,8 +64,7 @@ img.Image? _alignFrameIsolate(_AlignParams p) {
       format: img.Format.uint8,
       numChannels: 4,
     );
-
-// Rotation + miroir dans le même Isolate (pas de hop retour sur UI)
+// Rotation + miroir dans le même Isolate 
     if (p.rotDeg != 0) {
       aligned = img.copyRotate(aligned, angle: p.rotDeg.toDouble());
     }
@@ -83,9 +77,7 @@ img.Image? _alignFrameIsolate(_AlignParams p) {
   }
 }
 
-// ─────────────────────────────────────────────
-// Widget
-// ─────────────────────────────────────────────
+
 class CameraScreen extends StatefulWidget {
   
   final List<CameraDescription> cameras;
@@ -186,9 +178,7 @@ class _CameraScreenState extends State<CameraScreen>
     }
   }
 
-// ─────────────────────────────────────────────
-// Pipeline principal
-// ─────────────────────────────────────────────
+
   void _processFrame(CameraImage cameraImage) async {
     _frameSkipper++;
     if (_frameSkipper % 3 != 0) return;
@@ -289,7 +279,7 @@ class _CameraScreenState extends State<CameraScreen>
         }
       }
 
-      // FIX 3 — debounce : setState seulement si label ou conf change
+      // debounce : setState seulement si label ou conf change
       final labelChanged = bestLabel != _lastLabel;
       final confChanged = (bestConf - _lastConf).abs() > 0.02; // seuil 2 %
 
@@ -318,9 +308,7 @@ class _CameraScreenState extends State<CameraScreen>
     }
   }
 
-// ─────────────────────────────────────────────
-// Lifecycle
-// ─────────────────────────────────────────────
+
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (_controller == null || !_controller!.value.isInitialized) return;
@@ -353,9 +341,7 @@ class _CameraScreenState extends State<CameraScreen>
     super.dispose();
   }
 
-// ─────────────────────────────────────────────
-// UI (inchangé)
-// ─────────────────────────────────────────────
+
   @override
   Widget build(BuildContext context) {
     final isReady = _controller?.value.isInitialized ?? false;

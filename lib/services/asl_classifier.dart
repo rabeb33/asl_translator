@@ -3,22 +3,18 @@ import 'package:image/image.dart' as img;
 
 class ASLClassifier {
   static const String _modelPath = 'assets/models/best_int8.tflite';
-  static const int _inputSize = 128;
+  static const int _inputSize = 224;
   static const double confidenceThreshold = 0.60;
-
   static const List<String> classNames = [
     'A','B','C','D','E','F','G','H','I','J','K',
     'L','M','N','O','P','Q','R','S','T','U','V',
     'W','X','Y','Z'
   ];
-
   Interpreter? _interpreter;
   bool _isLoaded = false;
   late List<int> _outputShape;
   int _numClasses = 26;
-
   bool get isLoaded => _isLoaded;
-
   Future<void> loadModel() async {
     try {
       final options = InterpreterOptions()..threads = 2;
@@ -29,19 +25,12 @@ class ASLClassifier {
       final outputShape = _interpreter!.getOutputTensor(0).shape;
       final inputType   = _interpreter!.getInputTensor(0).type;
       final outputType  = _interpreter!.getOutputTensor(0).type;
-
-      print('✅ Modèle ASL chargé');
-      print('   Input shape:  $inputShape');
-      print('   Output shape: $outputShape');
-      print('   Input type:   $inputType');
-      print('   Output type:  $outputType');
-
       _outputShape = outputShape;
       _numClasses  = outputShape.last;
 
       _isLoaded = true;
     } catch (e) {
-      print('❌ Erreur chargement modèle: $e');
+      print(' Erreur chargement modèle: $e');
       _isLoaded = false;
     }
   }
@@ -82,12 +71,12 @@ class ASLClassifier {
       }
 
       final label = topIdx < classNames.length ? classNames[topIdx] : '?';
-      print('🔤 Top: $label (${(topConf * 100).toStringAsFixed(1)}%)');
+      print(' Top: $label (${(topConf * 100).toStringAsFixed(1)}%)');
 
       if (topConf < confidenceThreshold) return null;
       return (label: label, confidence: topConf);
     } catch (e) {
-      print('❌ classify: $e');
+      print(' classify: $e');
       return null;
     }
   }

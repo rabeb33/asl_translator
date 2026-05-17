@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gap/gap.dart';
 
-// ─────────────────────────────────────────────
-// Modèle
-// ─────────────────────────────────────────────
+
 class _AslSign {
   final String letter;
   final String description;
@@ -17,9 +15,7 @@ class _AslSign {
   });
 }
 
-// ─────────────────────────────────────────────
-// Données — 26 lettres → assets/images/asl_A.png … asl_Z.png
-// ─────────────────────────────────────────────
+
 const List<_AslSign> _aslAlphabet = [
   _AslSign(letter: 'A', description: 'Poing fermé, pouce sur le côté.', pngAsset: 'assets/images/A.jpg'),
   _AslSign(letter: 'B', description: 'Main ouverte, doigts joints vers le haut, pouce replié.', pngAsset: 'assets/images/B.png'),
@@ -49,9 +45,7 @@ const List<_AslSign> _aslAlphabet = [
   _AslSign(letter: 'Z', description: "Index trace un Z dans l'air.", pngAsset: 'assets/images/Z.png'),
 ];
 
-// ─────────────────────────────────────────────
-// Thème
-// ─────────────────────────────────────────────
+
 const _bg       = Color(0xFF0A0A0F);
 const _surface  = Color(0xFF12121C);
 const _card     = Color(0xFF1A1A28);
@@ -61,9 +55,9 @@ const _green    = Color(0xFF00E5A0);
 const _border   = Color(0x1AFFFFFF);
 const _borderHi = Color(0x4D7C6FFF);
 
-// ─────────────────────────────────────────────
+
 // Écran principal
-// ─────────────────────────────────────────────
+
 class AlphabetScreen extends StatefulWidget {
   const AlphabetScreen({super.key});
 
@@ -145,9 +139,8 @@ class _AlphabetScreenState extends State<AlphabetScreen> {
   }
 }
 
-// ─────────────────────────────────────────────
 // Top bar
-// ─────────────────────────────────────────────
+
 class _TopBar extends StatelessWidget {
   final VoidCallback onBack;
   const _TopBar({required this.onBack});
@@ -208,9 +201,7 @@ class _TopBar extends StatelessWidget {
   }
 }
 
-// ─────────────────────────────────────────────
-// Barre de recherche
-// ─────────────────────────────────────────────
+
 class _SearchBar extends StatelessWidget {
   final TextEditingController controller;
   final ValueChanged<String> onChanged;
@@ -270,9 +261,7 @@ class _SearchBar extends StatelessWidget {
   }
 }
 
-// ─────────────────────────────────────────────
-// Panneau de détail
-// ─────────────────────────────────────────────
+
 class _DetailPanel extends StatelessWidget {
   final _AslSign sign;
   const _DetailPanel({required this.sign});
@@ -349,9 +338,7 @@ class _DetailPanel extends StatelessWidget {
   }
 }
 
-// ─────────────────────────────────────────────
-// Carte lettre (grille)
-// ─────────────────────────────────────────────
+
 class _LetterCard extends StatelessWidget {
   final _AslSign sign;
   final bool isActive;
@@ -415,9 +402,7 @@ class _LetterCard extends StatelessWidget {
   }
 }
 
-// ─────────────────────────────────────────────
-// État vide
-// ─────────────────────────────────────────────
+
 class _EmptyState extends StatelessWidget {
   const _EmptyState();
 

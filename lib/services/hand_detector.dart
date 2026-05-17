@@ -25,22 +25,24 @@ class HandDetectorService {
 
   Future<void> initialize() async {
     try {
-      // Version simplifiée SANS PerformanceConfig pour éviter les erreurs
+      
       _detector = await HandDetector.create(
         mode: HandMode.boxesAndLandmarks,
         detectorConf: 0.5,        // Seuil plus haut = détection plus rapide
         maxDetections: 1,         // Une seule main = beaucoup plus rapide
         minLandmarkScore: 0.2,
         enableGestures: false,
-        // Pas de performanceConfig - on laisse les valeurs par défaut
+        
       );
       _initialized = true;
-      print('✅ HandDetector initialisé');
+      print(' HandDetector initialisé');
     } catch (e) {
-      print('❌ HandDetector init error: $e');
+      print(' HandDetector init error: $e');
       _initialized = false;
     }
   }
+
+
 
   int resolveRotationDegrees({
     required int sensorOrientation,
@@ -87,10 +89,12 @@ class HandDetectorService {
         rotation: rotation,
         isBgra: false,
       );
-      print('🖐️ Mains: ${hands.length}');
+
+      
+      print(' Mains: ${hands.length}');
       return hands;
     } catch (e) {
-      print('❌ detectHands: $e');
+      print(' detectHands: $e');
       return [];
     }
   }
@@ -110,7 +114,7 @@ class HandDetectorService {
           .clamp(1.0, imageHeight.toDouble() - t);
       return HandBoundingBox(left: l, top: t, width: w, height: h);
     } catch (e) {
-      print('❌ getHandBoundingBox: $e');
+      print(' getHandBoundingBox: $e');
       return null;
     }
   }

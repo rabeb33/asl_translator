@@ -2,11 +2,13 @@ import 'package:flutter/foundation.dart';
 import '../screens/history_screen.dart'; // HistoryEntry
 
 class ASLState extends ChangeNotifier {
+  // -- Detection courante --
   String? _currentLabel;
   double _currentConfidence = 0;
   int _handCount = 0;
   double _currentFps = 0;
-
+  
+// -- Detection courante --
   String _wordBuffer = '';
   final List<String> _wordHistory = []; // court historique (bottom HUD)
   final List<HistoryEntry> _historyEntries = []; // historique complet
